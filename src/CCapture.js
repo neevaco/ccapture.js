@@ -273,180 +273,180 @@ CCJPEGEncoder.prototype.add = function( canvas ) {
 
 */
 
-function CCWebMEncoder( settings ) {
+// function CCWebMEncoder( settings ) {
 
-	var canvas = document.createElement( 'canvas' );
-	if( canvas.toDataURL( 'image/webp' ).substr(5,10) !== 'image/webp' ){
-		console.log( "WebP not supported - try another export format" )
-	}
+// 	var canvas = document.createElement( 'canvas' );
+// 	if( canvas.toDataURL( 'image/webp' ).substr(5,10) !== 'image/webp' ){
+// 		console.log( "WebP not supported - try another export format" )
+// 	}
 
-	CCFrameEncoder.call( this, settings );
+// 	CCFrameEncoder.call( this, settings );
 
-	this.quality = ( settings.quality / 100 ) || .8;
+// 	this.quality = ( settings.quality / 100 ) || .8;
 
-	this.extension = '.webm'
-	this.mimeType = 'video/webm'
-	this.baseFilename = this.filename;
-  this.framerate = settings.framerate;
+// 	this.extension = '.webm'
+// 	this.mimeType = 'video/webm'
+// 	this.baseFilename = this.filename;
+//   this.framerate = settings.framerate;
 
-	this.frames = 0;
-	this.part = 1;
+// 	this.frames = 0;
+// 	this.part = 1;
 
-  this.videoWriter = new WebMWriter({
-    quality: this.quality,
-    fileWriter: null,
-    fd: null,
-    frameRate: this.framerate
-  });
+//   this.videoWriter = new WebMWriter({
+//     quality: this.quality,
+//     fileWriter: null,
+//     fd: null,
+//     frameRate: this.framerate
+//   });
 
-}
+// }
 
-CCWebMEncoder.prototype = Object.create( CCFrameEncoder.prototype );
+// CCWebMEncoder.prototype = Object.create( CCFrameEncoder.prototype );
 
-CCWebMEncoder.prototype.start = function( canvas ) {
+// CCWebMEncoder.prototype.start = function( canvas ) {
 
-	this.dispose();
+// 	this.dispose();
 
-}
+// }
 
-CCWebMEncoder.prototype.add = function( canvas ) {
+// CCWebMEncoder.prototype.add = function( canvas ) {
 
-  this.videoWriter.addFrame(canvas);
+//   this.videoWriter.addFrame(canvas);
 
-	if( this.settings.autoSaveTime > 0 && ( this.frames / this.settings.framerate ) >= this.settings.autoSaveTime ) {
-		this.save( function( blob ) {
-			this.filename = this.baseFilename + '-part-' + pad( this.part );
-			download( blob, this.filename + this.extension, this.mimeType );
-			this.dispose();
-			this.part++;
-			this.filename = this.baseFilename + '-part-' + pad( this.part );
-			this.step();
-		}.bind( this ) )
-	} else {
-    this.frames++;
-		this.step();
-	}
+// 	if( this.settings.autoSaveTime > 0 && ( this.frames / this.settings.framerate ) >= this.settings.autoSaveTime ) {
+// 		this.save( function( blob ) {
+// 			this.filename = this.baseFilename + '-part-' + pad( this.part );
+// 			download( blob, this.filename + this.extension, this.mimeType );
+// 			this.dispose();
+// 			this.part++;
+// 			this.filename = this.baseFilename + '-part-' + pad( this.part );
+// 			this.step();
+// 		}.bind( this ) )
+// 	} else {
+//     this.frames++;
+// 		this.step();
+// 	}
 
-}
+// }
 
-CCWebMEncoder.prototype.save = function( callback ) {
+// CCWebMEncoder.prototype.save = function( callback ) {
 
-  this.videoWriter.complete().then(callback);
+//   this.videoWriter.complete().then(callback);
 
-}
+// }
 
-CCWebMEncoder.prototype.dispose = function( canvas ) {
+// CCWebMEncoder.prototype.dispose = function( canvas ) {
 
-	this.frames = 0;
-  this.videoWriter = new WebMWriter({
-    quality: this.quality,
-    fileWriter: null,
-    fd: null,
-    frameRate: this.framerate
-  });
+// 	this.frames = 0;
+//   this.videoWriter = new WebMWriter({
+//     quality: this.quality,
+//     fileWriter: null,
+//     fd: null,
+//     frameRate: this.framerate
+//   });
 
-}
+// }
 
-function CCFFMpegServerEncoder( settings ) {
+// function CCFFMpegServerEncoder( settings ) {
 
-	CCFrameEncoder.call( this, settings );
+// 	CCFrameEncoder.call( this, settings );
 
-	settings.quality = ( settings.quality / 100 ) || .8;
+// 	settings.quality = ( settings.quality / 100 ) || .8;
 
-	this.encoder = new FFMpegServer.Video( settings );
-    this.encoder.on( 'process', function() {
-        this.emit( 'process' )
-    }.bind( this ) );
-    this.encoder.on('finished', function( url, size ) {
-        var cb = this.callback;
-        if ( cb ) {
-            this.callback = undefined;
-            cb( url, size );
-        }
-    }.bind( this ) );
-    this.encoder.on( 'progress', function( progress ) {
-        if ( this.settings.onProgress ) {
-            this.settings.onProgress( progress )
-        }
-    }.bind( this ) );
-    this.encoder.on( 'error', function( data ) {
-        alert(JSON.stringify(data, null, 2));
-    }.bind( this ) );
+// 	this.encoder = new FFMpegServer.Video( settings );
+//     this.encoder.on( 'process', function() {
+//         this.emit( 'process' )
+//     }.bind( this ) );
+//     this.encoder.on('finished', function( url, size ) {
+//         var cb = this.callback;
+//         if ( cb ) {
+//             this.callback = undefined;
+//             cb( url, size );
+//         }
+//     }.bind( this ) );
+//     this.encoder.on( 'progress', function( progress ) {
+//         if ( this.settings.onProgress ) {
+//             this.settings.onProgress( progress )
+//         }
+//     }.bind( this ) );
+//     this.encoder.on( 'error', function( data ) {
+//         alert(JSON.stringify(data, null, 2));
+//     }.bind( this ) );
 
-}
+// }
 
-CCFFMpegServerEncoder.prototype = Object.create( CCFrameEncoder.prototype );
+// CCFFMpegServerEncoder.prototype = Object.create( CCFrameEncoder.prototype );
 
-CCFFMpegServerEncoder.prototype.start = function() {
+// CCFFMpegServerEncoder.prototype.start = function() {
 
-	this.encoder.start( this.settings );
+// 	this.encoder.start( this.settings );
 
-};
+// };
 
-CCFFMpegServerEncoder.prototype.add = function( canvas ) {
+// CCFFMpegServerEncoder.prototype.add = function( canvas ) {
 
-	this.encoder.add( canvas );
+// 	this.encoder.add( canvas );
 
-}
+// }
 
-CCFFMpegServerEncoder.prototype.save = function( callback ) {
+// CCFFMpegServerEncoder.prototype.save = function( callback ) {
 
-    this.callback = callback;
-    this.encoder.end();
+//     this.callback = callback;
+//     this.encoder.end();
 
-}
+// }
 
-CCFFMpegServerEncoder.prototype.safeToProceed = function() {
-    return this.encoder.safeToProceed();
-};
+// CCFFMpegServerEncoder.prototype.safeToProceed = function() {
+//     return this.encoder.safeToProceed();
+// };
 
 /*
 	HTMLCanvasElement.captureStream()
 */
 
-function CCStreamEncoder( settings ) {
+// function CCStreamEncoder( settings ) {
 
-	CCFrameEncoder.call( this, settings );
+// 	CCFrameEncoder.call( this, settings );
 
-	this.framerate = this.settings.framerate;
-	this.type = 'video/webm';
-	this.extension = '.webm';
-	this.stream = null;
-	this.mediaRecorder = null;
-	this.chunks = [];
+// 	this.framerate = this.settings.framerate;
+// 	this.type = 'video/webm';
+// 	this.extension = '.webm';
+// 	this.stream = null;
+// 	this.mediaRecorder = null;
+// 	this.chunks = [];
 
-}
+// }
 
-CCStreamEncoder.prototype = Object.create( CCFrameEncoder.prototype );
+// CCStreamEncoder.prototype = Object.create( CCFrameEncoder.prototype );
 
-CCStreamEncoder.prototype.add = function( canvas ) {
+// CCStreamEncoder.prototype.add = function( canvas ) {
 
-	if( !this.stream ) {
-		this.stream = canvas.captureStream( this.framerate );
-		this.mediaRecorder = new MediaRecorder( this.stream );
-		this.mediaRecorder.start();
+// 	if( !this.stream ) {
+// 		this.stream = canvas.captureStream( this.framerate );
+// 		this.mediaRecorder = new MediaRecorder( this.stream );
+// 		this.mediaRecorder.start();
 
-		this.mediaRecorder.ondataavailable = function(e) {
-			this.chunks.push(e.data);
-		}.bind( this );
+// 		this.mediaRecorder.ondataavailable = function(e) {
+// 			this.chunks.push(e.data);
+// 		}.bind( this );
 
-	}
-	this.step();
+// 	}
+// 	this.step();
 
-}
+// }
 
-CCStreamEncoder.prototype.save = function( callback ) {
+// CCStreamEncoder.prototype.save = function( callback ) {
 
-	this.mediaRecorder.onstop = function( e ) {
-		var blob = new Blob( this.chunks, { 'type' : 'video/webm' });
-		this.chunks = [];
-		callback( blob );
+// 	this.mediaRecorder.onstop = function( e ) {
+// 		var blob = new Blob( this.chunks, { 'type' : 'video/webm' });
+// 		this.chunks = [];
+// 		callback( blob );
 
-	}.bind( this );
+// 	}.bind( this );
 
-	this.mediaRecorder.stop();
+// 	this.mediaRecorder.stop();
 
-}
+// }
 
 /*function CCGIFEncoder( settings ) {
 
@@ -629,11 +629,9 @@ function CCapture( settings ) {
 
     var _encoders = {
 		gif: CCGIFEncoder,
-		webm: CCWebMEncoder,
 		ffmpegserver: CCFFMpegServerEncoder,
 		png: CCPNGEncoder,
 		jpg: CCJPEGEncoder,
-		'webm-mediarecorder': CCStreamEncoder
     };
 
     var ctor = _encoders[ _settings.format ];
