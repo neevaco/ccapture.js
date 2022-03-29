@@ -162,110 +162,110 @@ CCFrameEncoder.prototype.dispose = function(){};
 CCFrameEncoder.prototype.safeToProceed = function(){ return true; };
 CCFrameEncoder.prototype.step = function() { console.log( 'Step not set!' ) }
 
-function CCTarEncoder( settings ) {
+// function CCTarEncoder( settings ) {
 
-  CCFrameEncoder.call( this, settings );
+//   CCFrameEncoder.call( this, settings );
 
-  this.extension = '.tar'
-  this.mimeType = 'application/x-tar'
-  this.fileExtension = '';
-  this.baseFilename = this.filename;
+//   this.extension = '.tar'
+//   this.mimeType = 'application/x-tar'
+//   this.fileExtension = '';
+//   this.baseFilename = this.filename;
 
-  this.tape = null
-  this.count = 0;
-  this.part = 1;
-  this.frames = 0;
+//   this.tape = null
+//   this.count = 0;
+//   this.part = 1;
+//   this.frames = 0;
 
-}
+// }
 
-CCTarEncoder.prototype = Object.create( CCFrameEncoder.prototype );
+// CCTarEncoder.prototype = Object.create( CCFrameEncoder.prototype );
 
-CCTarEncoder.prototype.start = function(){
+// CCTarEncoder.prototype.start = function(){
 
-  this.dispose();
+//   this.dispose();
 
-};
+// };
 
-CCTarEncoder.prototype.add = function( blob ) {
+// CCTarEncoder.prototype.add = function( blob ) {
 
-  var fileReader = new FileReader();
-  fileReader.onload = function() {
-    this.tape.append( pad( this.count ) + this.fileExtension, new Uint8Array( fileReader.result ) );
+//   var fileReader = new FileReader();
+//   fileReader.onload = function() {
+//     this.tape.append( pad( this.count ) + this.fileExtension, new Uint8Array( fileReader.result ) );
 
-    if( this.settings.autoSaveTime > 0 && ( this.frames / this.settings.framerate ) >= this.settings.autoSaveTime ) {
-      this.save( function( blob ) {
-        this.filename = this.baseFilename + '-part-' + pad( this.part );
-        download( blob, this.filename + this.extension, this.mimeType );
-        var count = this.count;
-        this.dispose();
-        this.count = count+1;
-        this.part++;
-        this.filename = this.baseFilename + '-part-' + pad( this.part );
-        this.frames = 0;
-        this.step();
-      }.bind( this ) )
-    } else {
-      this.count++;
-      this.frames++;
-      this.step();
-    }
+//     if( this.settings.autoSaveTime > 0 && ( this.frames / this.settings.framerate ) >= this.settings.autoSaveTime ) {
+//       this.save( function( blob ) {
+//         this.filename = this.baseFilename + '-part-' + pad( this.part );
+//         download( blob, this.filename + this.extension, this.mimeType );
+//         var count = this.count;
+//         this.dispose();
+//         this.count = count+1;
+//         this.part++;
+//         this.filename = this.baseFilename + '-part-' + pad( this.part );
+//         this.frames = 0;
+//         this.step();
+//       }.bind( this ) )
+//     } else {
+//       this.count++;
+//       this.frames++;
+//       this.step();
+//     }
 
-  }.bind( this );
-  fileReader.readAsArrayBuffer(blob);
+//   }.bind( this );
+//   fileReader.readAsArrayBuffer(blob);
 
-}
+// }
 
-CCTarEncoder.prototype.save = function( callback ) {
+// CCTarEncoder.prototype.save = function( callback ) {
 
-  callback( this.tape.save() );
+//   callback( this.tape.save() );
 
-}
+// }
 
-CCTarEncoder.prototype.dispose = function() {
+// CCTarEncoder.prototype.dispose = function() {
 
-  this.tape = new Tar();
-  this.count = 0;
+//   this.tape = new Tar();
+//   this.count = 0;
 
-}
+// }
 
-function CCPNGEncoder( settings ) {
+// function CCPNGEncoder( settings ) {
 
-	CCTarEncoder.call( this, settings );
+// 	CCTarEncoder.call( this, settings );
 
-	this.type = 'image/png';
-	this.fileExtension = '.png';
+// 	this.type = 'image/png';
+// 	this.fileExtension = '.png';
 
-}
+// }
 
-CCPNGEncoder.prototype = Object.create( CCTarEncoder.prototype );
+// CCPNGEncoder.prototype = Object.create( CCTarEncoder.prototype );
 
-CCPNGEncoder.prototype.add = function( canvas ) {
+// CCPNGEncoder.prototype.add = function( canvas ) {
 
-	canvas.toBlob( function( blob ) {
-		CCTarEncoder.prototype.add.call( this, blob );
-	}.bind( this ), this.type )
+// 	canvas.toBlob( function( blob ) {
+// 		CCTarEncoder.prototype.add.call( this, blob );
+// 	}.bind( this ), this.type )
 
-}
+// }
 
-function CCJPEGEncoder( settings ) {
+// function CCJPEGEncoder( settings ) {
 
-	CCTarEncoder.call( this, settings );
+// 	CCTarEncoder.call( this, settings );
 
-	this.type = 'image/jpeg';
-	this.fileExtension = '.jpg';
-	this.quality = ( settings.quality / 100 ) || .8;
+// 	this.type = 'image/jpeg';
+// 	this.fileExtension = '.jpg';
+// 	this.quality = ( settings.quality / 100 ) || .8;
 
-}
+// }
 
-CCJPEGEncoder.prototype = Object.create( CCTarEncoder.prototype );
+// CCJPEGEncoder.prototype = Object.create( CCTarEncoder.prototype );
 
-CCJPEGEncoder.prototype.add = function( canvas ) {
+// CCJPEGEncoder.prototype.add = function( canvas ) {
 
-	canvas.toBlob( function( blob ) {
-		CCTarEncoder.prototype.add.call( this, blob );
-	}.bind( this ), this.type, this.quality )
+// 	canvas.toBlob( function( blob ) {
+// 		CCTarEncoder.prototype.add.call( this, blob );
+// 	}.bind( this ), this.type, this.quality )
 
-}
+// }
 
 /*
 
@@ -629,9 +629,6 @@ function CCapture( settings ) {
 
     var _encoders = {
 		gif: CCGIFEncoder,
-		ffmpegserver: CCFFMpegServerEncoder,
-		png: CCPNGEncoder,
-		jpg: CCJPEGEncoder,
     };
 
     var ctor = _encoders[ _settings.format ];
