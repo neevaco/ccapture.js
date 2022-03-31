@@ -524,7 +524,10 @@ function CCGIFEncoder( settings ) {
   	this.ctx = this.canvas.getContext( '2d' );
   	this.sizeSet = false;
 
-  	this.encoder = new GIF({
+	console.log("in GifEncoder");
+	console.log(module)
+	
+  	this.encoder = new module.exports.GIF.setOptions({
 		workers: settings.workers,
 		quality: settings.quality,
 		workerScript: settings.workersPath + 'gif.worker.js'
@@ -631,15 +634,15 @@ function CCapture( settings ) {
 		gif: CCGIFEncoder,
     };
 
-    var ctor = _encoders[ _settings.format ];
-    if ( !ctor ) {
+	var ctor = _encoders[ _settings.format ];
+	if ( !ctor ) {
 		throw "Error: Incorrect or missing format: Valid formats are " + Object.keys(_encoders).join(", ");
-    }
-    _encoder = new ctor( _settings );
-    _encoder.step = _step
+	}
+	_encoder = new ctor( _settings );
+	_encoder.step = _step
 
 	_encoder.on('process', _process);
-    _encoder.on('progress', _progress);
+	_encoder.on('progress', _progress);
 
     if ("performance" in window == false) {
     	window.performance = {};
