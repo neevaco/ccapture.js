@@ -1067,7 +1067,8 @@ function CCGIFEncoder( settings ) {
   	this.encoder = new GIF({
 		workers: settings.workers,
 		quality: settings.quality,
-		workerScript: settings.workersPath + 'gif.worker.js'
+		workerScript: settings.workersPath + 'gif.worker.js',
+		dither: true,
 	} );
 
     this.encoder.on( 'progress', function( progress ) {
@@ -1148,6 +1149,7 @@ function CCapture( settings ) {
 	_settings.timeLimit = _settings.timeLimit || 0;
 	_settings.frameLimit = _settings.frameLimit || 0;
 	_settings.startTime = _settings.startTime || 0;
+	_settings.workersPath = '/';
 
 	var _timeDisplay = document.createElement( 'div' );
 	_timeDisplay.style.position = 'absolute';
@@ -1402,9 +1404,9 @@ function CCapture( settings ) {
 				}
 
 			} else {
-				_encoder.add( canvas );
-				_frameCount++;
-				_log( 'Full Frame! ' + _frameCount );
+                _encoder.add( canvas );
+                _frameCount++;
+                _log( 'Full Frame! ' + _frameCount );
 			}
 
 		}
