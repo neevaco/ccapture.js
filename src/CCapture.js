@@ -1329,6 +1329,7 @@ function CCapture( settings ) {
 		if( ( _settings.frameLimit && _frameCount >= _settings.frameLimit ) || ( _settings.timeLimit && seconds >= _settings.timeLimit ) ) {
 			_stop();
 			_save();
+            _settings.framerate = 1000000000;
 		}
 		var d = new Date( null );
 		d.setSeconds( seconds );
