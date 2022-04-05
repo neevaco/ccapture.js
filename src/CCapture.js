@@ -1062,8 +1062,6 @@ function CCGIFEncoder( settings ) {
   	this.ctx = this.canvas.getContext( '2d' );
   	this.sizeSet = false;
 
-	console.log("in GifEncoder");
-	console.log(GIF)
   	this.encoder = new GIF({
 		workers: settings.workers,
 		quality: settings.quality,
