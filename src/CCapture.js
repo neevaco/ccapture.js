@@ -1493,12 +1493,20 @@ function CCapture( settings ) {
 
     }
 
+    function _complete() {
+        if ( _capturing) {
+            return false;
+        }
+        return true;
+    }
+
 	return {
 		start: _start,
 		capture: _capture,
 		stop: _stop,
 		save: _save,
-        on: _on
+        on: _on,
+        complete: _complete
 	}
 }
 var GIF = freeModule.exports;
