@@ -3,7 +3,7 @@
 // Definitions by: Sam Alexander <https://github.com/samalexander>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-declare class CCapture {
+export default class CCapture {
     constructor(settings: CCapture.Settings);
 
     start(): void;
@@ -17,7 +17,7 @@ declare class CCapture {
     complete(): boolean;
 }
 
-declare namespace CCapture {
+ declare namespace CCapture {
     interface Settings {
         /**
          * Target framerate for the capture
