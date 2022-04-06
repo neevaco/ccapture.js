@@ -1,5 +1,5 @@
 {
-  "name": "ccapture.js",
+  "name": "@neevaco/ccapture.js",
   "version": "1.1.1",
   "description": "A library to capture canvas-based animations at a fixed framerate",
   "main": "build/CCapture.all.min.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spite/ccapture.js.git"
+    "url": "git+https://github.com/neevaco/ccapture.js.git"
   },
   "keywords": [
     "capture",
